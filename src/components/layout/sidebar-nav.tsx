@@ -2,12 +2,29 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, Children } from "react";
-import { LayoutDashboard, Menu, X, type LucideIcon } from "lucide-react";
+import {
+  Activity,
+  Building2,
+  GraduationCap,
+  LayoutDashboard,
+  Menu,
+  School,
+  Settings,
+  Users,
+  X,
+  type LucideIcon,
+} from "lucide-react";
 import clsx from "clsx";
 import type { IconName } from "@/config/navigation";
 
 const ICONS: Record<IconName, LucideIcon> = {
   dashboard: LayoutDashboard,
+  schools: Building2,
+  teachers: Users,
+  students: GraduationCap,
+  classes: School,
+  activity: Activity,
+  settings: Settings,
 };
 
 type Variant = "admin" | "teacher" | "student";

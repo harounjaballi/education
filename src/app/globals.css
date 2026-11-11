@@ -38,6 +38,17 @@
     @apply inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5
            text-sm font-semibold text-navy-900 transition hover:bg-slate-50;
   }
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold
+           text-white shadow-sm transition hover:bg-red-700 active:translate-y-px
+           disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-ghost-danger {
+    @apply inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50;
+  }
+  .link {
+    @apply font-medium text-navy-900 underline-offset-4 hover:text-teal-700 hover:underline;
+  }
   .section-title {
     @apply text-sm font-semibold text-navy-900;
   }

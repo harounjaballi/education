@@ -58,7 +58,8 @@ eduplatform/
 │  ├─ migrations/
 │  │  ├─ 0001_schema.sql ....... tables, types, index, contraintes, création auto du profil
 │  │  ├─ 0002_security.sql ..... fonctions d'accès, triggers anti-triche, RLS, correction QCM
-│  │  └─ 0003_storage.sql ...... buckets privés + politiques Storage
+│  │  ├─ 0003_storage.sql ...... buckets privés + politiques Storage
+│  │  └─ 0004_platform_settings.sql . paramètres de la plateforme + niveaux scolaires
 │  └─ tests/rls_scenario.sql ... scénario d'isolation (Postgres local simulant Supabase)
 ├─ src/
 │  ├─ middleware.ts
@@ -68,6 +69,12 @@ eduplatform/
 │  │  ├─ login/ ................ connexion (Server Action + validation)
 │  │  ├─ auth/signout/ ......... déconnexion
 │  │  ├─ admin/ ................ espace super admin
+│  │  │  ├─ schools/ ........... établissements (CRUD)
+│  │  │  ├─ teachers/, students/ comptes (création, profil, statut, mot de passe, suppression)
+│  │  │  ├─ users/ ............. logique partagée des comptes (actions service_role)
+│  │  │  ├─ classes/ ........... classes, enseignant titulaire, inscriptions
+│  │  │  ├─ activity/ .......... journal d'audit filtrable
+│  │  │  └─ settings/ .......... paramètres généraux + niveaux
 │  │  ├─ teacher/ .............. espace enseignant
 │  │  └─ student/ .............. espace élève
 │  ├─ components/
@@ -93,7 +100,7 @@ Chaque nouvelle phase ajoute ses dossiers sous `src/app/<espace>/…` et ses ent
 
 1. Créer un projet sur [supabase.com](https://supabase.com) (région la plus proche de vos utilisateurs).
 2. **SQL Editor** → exécuter, dans l'ordre, le contenu de :
-   `0001_schema.sql`, puis `0002_security.sql`, puis `0003_storage.sql`.
+   `0001_schema.sql`, `0002_security.sql`, `0003_storage.sql`, puis `0004_platform_settings.sql`.
 3. **Authentication → Providers → Email** : laisser activé. **Désactiver « Allow new users to sign up »** : les comptes sont créés par l'administration, pas en libre inscription.
 4. **Authentication → URL Configuration** : *Site URL* = l'URL de production (ex. `https://eduplatform.vercel.app`).
 5. **Project Settings → API** : copier `Project URL`, `anon public` et `service_role`.
@@ -129,6 +136,12 @@ npm run dev                   # http://localhost:3000
 
 ---
 
+### 3.5 Comptes créés par le super admin
+
+La création, la modification d'e-mail, le changement de mot de passe, la suspension et la suppression de comptes utilisent la clé `SUPABASE_SERVICE_ROLE_KEY`, uniquement dans des Server Actions qui revérifient à chaque appel que l'appelant est un super admin actif. Sans cette variable, ces actions affichent un message d'erreur explicite.
+
+Suspendre ou désactiver un compte le bannit aussi côté Supabase Auth (plus aucune connexion ni renouvellement de session) ; le réactiver lève ce bannissement.
+
 ## 4. Vérifications effectuées
 
 - Migrations appliquées sans erreur sur PostgreSQL 16 avec une simulation de l'environnement Supabase (`auth.uid()`, rôles `authenticated` / `service_role`, Storage).
@@ -142,7 +155,7 @@ npm run dev                   # http://localhost:3000
 | Phase | Contenu | État |
 |---|---|---|
 | 1 | Architecture, base de données complète, RLS, Storage, authentification, 3 espaces, FR/AR RTL | ✅ livrée |
-| 2 | Super admin : CRUD établissements, création de comptes enseignants/élèves (service_role), activation/suspension, classes et niveaux, paramètres, journal | à venir |
+| 2 | Super admin : CRUD établissements, création de comptes enseignants/élèves (service_role), activation/suspension, classes et niveaux, paramètres, journal | ✅ livrée |
 | 3 | Enseignant : classes, inscriptions d'élèves, matières, cours → chapitres → leçons, upload PDF/DOCX/PPTX/images/vidéos | à venir |
 | 4 | Devoirs (dépôt, correction, notes), examens/QCM chronométrés (passage, correction auto + manuelle) | à venir |
 | 5 | Élève : consultation des cours, téléchargements, vidéos, passage des évaluations, progression | à venir |

@@ -5,9 +5,16 @@ import type { Locale } from "@/lib/types";
 
 export const LOCALE_COOKIE = "edu_locale";
 
+/**
+ * Langue active : choix explicite (cookie) sinon langue du profil connecté
+ * (initialisée à la langue par défaut de la plateforme), sinon français.
+ */
 export async function getLocale(): Promise<Locale> {
   const value = (await cookies()).get(LOCALE_COOKIE)?.value;
-  return value === "ar" ? "ar" : "fr";
+  if (value === "ar" || value === "fr") return value;
+  const { getCurrentProfile } = await import("@/lib/auth");
+  const profile = await getCurrentProfile();
+  return profile?.locale === "ar" ? "ar" : "fr";
 }
 
 export async function getDictionary() {

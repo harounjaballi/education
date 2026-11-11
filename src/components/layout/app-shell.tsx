@@ -1,5 +1,6 @@
 import { GraduationCap, LogOut } from "lucide-react";
 import { getDictionary } from "@/lib/i18n/server";
+import { createClient } from "@/lib/supabase/server";
 import { NAVIGATION, SPACE_THEME } from "@/config/navigation";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { SidebarNav, MobileNav } from "./sidebar-nav";
@@ -42,6 +43,9 @@ export async function AppShell({ profile, children }: { profile: Profile; childr
   const { t, locale } = await getDictionary();
   const variant = SPACE_THEME[profile.role];
   const theme = THEMES[variant];
+  const supabase = await createClient();
+  const { data: settings } = await supabase.from("platform_settings").select("platform_name").maybeSingle();
+  const platformName = (settings?.platform_name as string | undefined) || t.app.name;
   const items = NAVIGATION[profile.role].map((item) => ({ ...item, labelText: t.nav[item.label] }));
   const initials =
     profile.full_name
@@ -57,7 +61,7 @@ export async function AppShell({ profile, children }: { profile: Profile; childr
         <GraduationCap className="h-[18px] w-[18px]" aria-hidden />
       </span>
       <div className="min-w-0">
-        <p className={`truncate text-[15px] font-semibold tracking-tight ${theme.brand}`}>{t.app.name}</p>
+        <p className={`truncate text-[15px] font-semibold tracking-tight ${theme.brand}`}>{platformName}</p>
         <span className={`mt-0.5 inline-block rounded-md px-1.5 py-0.5 text-[11px] font-medium ${theme.badge}`}>
           {t.roles[profile.role]}
         </span>
