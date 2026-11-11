@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+  html[lang="ar"] body {
+    font-family: var(--font-arabic), var(--font-sans), system-ui, sans-serif;
+  }
+  body {
+    @apply bg-surface text-slate-800;
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-teal-500/60 ring-offset-2 ring-offset-white;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-slate-200/70 bg-white shadow-card;
+  }
+  .label {
+    @apply block text-sm font-medium text-navy-900;
+  }
+  .input {
+    @apply block w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-navy-900
+           placeholder:text-slate-400 transition
+           focus:border-teal-500 focus:outline-none focus:ring-4 focus:ring-teal-500/15;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-navy-900 px-4 py-2.5 text-sm font-semibold
+           text-white shadow-sm transition hover:bg-navy-800 active:translate-y-px
+           disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5
+           text-sm font-semibold text-navy-900 transition hover:bg-slate-50;
+  }
+  .section-title {
+    @apply text-sm font-semibold text-navy-900;
+  }
+}
