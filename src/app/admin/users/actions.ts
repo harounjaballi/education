@@ -80,6 +80,7 @@ export async function createUser(role: ManagedRole, _prev: ActionState, formData
   });
 
   if (error || !created.user) {
+    console.error("[createUser] auth.admin.createUser", error?.status, error?.code, error?.message);
     if (error && (error.status === 422 || /already|registered|exists/i.test(error.message)))
       return fail(ctx.t, "emailTaken", formData, "email");
     return fail(ctx.t, "generic", formData);
@@ -100,12 +101,16 @@ export async function createUser(role: ManagedRole, _prev: ActionState, formData
       locale: settings?.default_locale === "ar" ? "ar" : "fr",
     })
     .eq("id", uid);
-  if (profileError) return rollback("generic");
+  if (profileError) {
+    console.error("[createUser] profiles.update", profileError.code, profileError.message);
+    return rollback("generic");
+  }
 
   const { error: extraError } = await service
     .from(role === "teacher" ? "teachers" : "students")
     .update(splitExtras(role, data))
     .eq("id", uid);
+  if (extraError) console.error("[createUser] extras.update", extraError.code, extraError.message);
   if (extraError) return rollback(isUniqueViolation(extraError) ? "codeTaken" : "generic", "student_code");
 
   await ctx.log(`${role}.create`, "profiles", uid, { email: data.email });
