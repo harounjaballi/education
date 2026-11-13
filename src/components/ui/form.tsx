@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useActionState, useContext, useEffect, useId, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
 import clsx from "clsx";
@@ -24,10 +25,12 @@ export function Form({
 }) {
   const [state, formAction] = useActionState(action, {});
   const ref = useRef<HTMLFormElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    if (state.ok && resetOnSuccess) ref.current?.reset();
-  }, [state, resetOnSuccess]);
+    if (state.ok && state.redirectTo) router.push(state.redirectTo);
+    else if (state.ok && resetOnSuccess) ref.current?.reset();
+  }, [state, resetOnSuccess, router]);
 
   return (
     <FormStateContext.Provider value={state}>
