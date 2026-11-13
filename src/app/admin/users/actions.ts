@@ -115,7 +115,8 @@ export async function createUser(role: ManagedRole, _prev: ActionState, formData
 
   await ctx.log(`${role}.create`, "profiles", uid, { email: data.email });
   revalidatePath(listPath(role));
-  redirect(`${listPath(role)}/${uid}?ok=created`);
+  // Navigation faite par le navigateur (voir Form) : la redirection serveur affichait un 404.
+  return { ok: true, redirectTo: `${listPath(role)}/${uid}?ok=created` };
 }
 
 // ---------------------------------------------------------------------------
