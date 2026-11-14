@@ -39,7 +39,7 @@ export default async function TeacherClassPage({
 
   const { data: klass } = await supabase
     .from("classes")
-    .select("id, name, level, academic_year, description")
+    .select("id, name, level, academic_year, description, monthly_fee")
     .eq("id", id)
     .eq("teacher_id", profile.id)
     .maybeSingle();

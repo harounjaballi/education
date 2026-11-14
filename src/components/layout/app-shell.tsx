@@ -3,6 +3,7 @@ import { getDictionary } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
 import { NAVIGATION, SPACE_THEME } from "@/config/navigation";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { PresenceHeartbeat } from "@/components/presence-heartbeat";
 import { SidebarNav, MobileNav } from "./sidebar-nav";
 import type { Profile } from "@/lib/types";
 
@@ -96,6 +97,7 @@ export async function AppShell({ profile, children }: { profile: Profile; childr
 
   return (
     <div className="min-h-dvh lg:grid lg:grid-cols-[264px_1fr]">
+      <PresenceHeartbeat />
       {/* Barre latérale (bureau) */}
       <aside className={`sticky top-0 hidden h-dvh flex-col gap-6 border-e px-4 py-5 lg:flex ${theme.aside}`}>
         {brand}

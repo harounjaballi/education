@@ -5,6 +5,7 @@ import { useEffect, useState, Children } from "react";
 import {
   Activity,
   BookOpen,
+  Banknote,
   Building2,
   GraduationCap,
   LayoutDashboard,
@@ -27,6 +28,7 @@ const ICONS: Record<IconName, LucideIcon> = {
   classes: School,
   courses: BookOpen,
   messages: MessageSquare,
+  payments: Banknote,
   activity: Activity,
   settings: Settings,
 };
