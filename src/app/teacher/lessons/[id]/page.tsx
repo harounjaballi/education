@@ -43,10 +43,15 @@ export default async function TeacherLessonPage({ params }: { params: Promise<{ 
   const documents = [...(lesson.documents ?? [])].sort((a, b) => a.created_at.localeCompare(b.created_at));
   const videos = [...(lesson.videos ?? [])].sort((a, b) => a.created_at.localeCompare(b.created_at));
 
-  // Liens de téléchargement temporaires (1 h) : le bucket est privé.
-  const signed = documents.length
-    ? (await supabase.storage.from("course-files").createSignedUrls(documents.map((d) => d.storage_path), 3600)).data ?? []
-    : [];
+  // Liens temporaires (1 h) qui forcent le téléchargement avec le nom d'origine du fichier.
+  const signed = await Promise.all(
+    documents.map(async (d) => {
+      const { data } = await supabase.storage
+        .from("course-files")
+        .createSignedUrl(d.storage_path, 3600, { download: d.name });
+      return { path: d.storage_path, signedUrl: data?.signedUrl ?? null };
+    }),
+  );
   const urlOf = (path: string) => signed.find((s) => s.path === path)?.signedUrl ?? null;
 
   return (
@@ -91,7 +96,7 @@ export default async function TeacherLessonPage({ params }: { params: Promise<{ 
                     <li key={d.id} className="flex items-center gap-2 py-2 text-sm">
                       <div className="min-w-0 flex-1">
                         {url ? (
-                          <a href={url} target="_blank" rel="noreferrer" className="link block truncate">
+                          <a href={url} download={d.name} className="link block truncate">
                             {d.name}
                           </a>
                         ) : (
