@@ -10,14 +10,27 @@ import { EmptyState } from "@/components/ui/stat-card";
 import { sendMessage } from "@/lib/messages-actions";
 import { AutoRefresh } from "./auto-refresh";
 
-type Msg = { id: string; sender_id: string; recipient_id: string; body: string; read_at: string | null; created_at: string };
+type Msg = {
+  id: string;
+  sender_id: string;
+  recipient_id: string;
+  body: string;
+  read_at: string | null;
+  created_at: string;
+};
 type Contact = { id: string; full_name: string; email: string };
 
 /**
  * Messagerie partagée enseignant / élève.
  * Contacts = personnes liées par une classe (filtrées par la RLS sur profiles).
  */
-export async function Inbox({ space, withId }: { space: "teacher" | "student"; withId?: string }) {
+export async function Inbox({
+  space,
+  withId,
+}: {
+  space: "teacher" | "student";
+  withId?: string;
+}) {
   const supabase = await createClient();
   const me = (await getCurrentProfile())!;
   const { t, locale } = await getDictionary();
@@ -63,7 +76,10 @@ export async function Inbox({ space, withId }: { space: "teacher" | "student"; w
   let thread: Msg[] = [];
   if (current) {
     thread = messages
-      .filter((msg) => msg.sender_id === current.id || msg.recipient_id === current.id)
+      .filter(
+        (msg) =>
+          msg.sender_id === current.id || msg.recipient_id === current.id,
+      )
       .slice(0, 200)
       .reverse();
     if (summary.get(current.id)?.unread) {
@@ -78,15 +94,31 @@ export async function Inbox({ space, withId }: { space: "teacher" | "student"; w
 
   return (
     <>
-      <PageHeader title={m.title} subtitle={space === "teacher" ? m.teacherSubtitle : m.studentSubtitle} />
+      <PageHeader
+        title={m.title}
+        subtitle={space === "teacher" ? m.teacherSubtitle : m.studentSubtitle}
+      />
       <AutoRefresh />
 
       <div className="grid gap-4 lg:grid-cols-[300px_1fr]">
-        <aside className={clsx("card h-fit overflow-hidden", current && "hidden lg:block")}>
-          <h2 className="border-b border-slate-100 px-4 py-3 text-sm font-semibold text-navy-900">{m.contacts}</h2>
+        <aside
+          className={clsx(
+            "card h-fit overflow-hidden",
+            current && "hidden lg:block",
+          )}
+        >
+          <h2 className="border-b border-slate-100 px-4 py-3 text-sm font-semibold text-navy-900">
+            {m.contacts}
+          </h2>
           {sorted.length === 0 ? (
             <div className="p-4">
-              <EmptyState text={space === "teacher" ? m.noContactsTeacher : m.noContactsStudent} />
+              <EmptyState
+                text={
+                  space === "teacher"
+                    ? m.noContactsTeacher
+                    : m.noContactsStudent
+                }
+              />
             </div>
           ) : (
             <ul className="max-h-[65vh] divide-y divide-slate-100 overflow-y-auto">
@@ -97,13 +129,18 @@ export async function Inbox({ space, withId }: { space: "teacher" | "student"; w
                   <li key={c.id}>
                     <Link
                       href={`${base}?with=${c.id}`}
-                      className={clsx("flex items-center gap-3 px-4 py-3 text-sm transition", active ? "bg-teal-50" : "hover:bg-slate-50")}
+                      className={clsx(
+                        "flex items-center gap-3 px-4 py-3 text-sm transition",
+                        active ? "bg-brand-soft" : "hover:bg-slate-50",
+                      )}
                     >
-                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-navy-50 text-xs font-semibold text-navy-700">
+                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand to-brand-2 text-xs font-semibold text-white">
                         {(c.full_name || c.email).slice(0, 1).toUpperCase()}
                       </span>
                       <span className="min-w-0 flex-1">
-                        <span className="block truncate font-medium text-navy-900">{c.full_name || c.email}</span>
+                        <span className="block truncate font-medium text-navy-900">
+                          {c.full_name || c.email}
+                        </span>
                         {s?.last && (
                           <span className="block truncate text-xs text-slate-500">
                             {s.last.sender_id === me.id ? `${m.you} : ` : ""}
@@ -112,7 +149,7 @@ export async function Inbox({ space, withId }: { space: "teacher" | "student"; w
                         )}
                       </span>
                       {!!s?.unread && !active && (
-                        <span className="grid h-5 min-w-5 place-items-center rounded-full bg-teal-600 px-1.5 text-[11px] font-semibold text-white">
+                        <span className="grid h-5 min-w-5 place-items-center rounded-full bg-brand px-1.5 text-[11px] font-semibold text-white">
                           {s.unread}
                         </span>
                       )}
@@ -124,7 +161,12 @@ export async function Inbox({ space, withId }: { space: "teacher" | "student"; w
           )}
         </aside>
 
-        <section className={clsx("card flex min-h-[60vh] flex-col overflow-hidden", !current && "hidden lg:flex")}>
+        <section
+          className={clsx(
+            "card flex min-h-[60vh] flex-col overflow-hidden",
+            !current && "hidden lg:flex",
+          )}
+        >
           {!current ? (
             <div className="grid flex-1 place-items-center p-6">
               <EmptyState text={m.choose} />
@@ -132,11 +174,17 @@ export async function Inbox({ space, withId }: { space: "teacher" | "student"; w
           ) : (
             <>
               <div className="flex items-center gap-3 border-b border-slate-100 px-4 py-3">
-                <Link href={base} className="text-sm text-slate-500 hover:text-navy-900 lg:hidden" aria-label={t.common.back}>
+                <Link
+                  href={base}
+                  className="text-sm text-slate-500 hover:text-navy-900 lg:hidden"
+                  aria-label={t.common.back}
+                >
                   ←
                 </Link>
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold text-navy-900">{current.full_name || current.email}</p>
+                  <p className="truncate text-sm font-semibold text-navy-900">
+                    {current.full_name || current.email}
+                  </p>
                   <p className="truncate text-xs text-slate-500" dir="ltr">
                     {current.email}
                   </p>
@@ -150,15 +198,30 @@ export async function Inbox({ space, withId }: { space: "teacher" | "student"; w
                   {thread.map((msg) => {
                     const mine = msg.sender_id === me.id;
                     return (
-                      <div key={msg.id} className={clsx("flex", mine ? "justify-end" : "justify-start")}>
+                      <div
+                        key={msg.id}
+                        className={clsx(
+                          "flex",
+                          mine ? "justify-end" : "justify-start",
+                        )}
+                      >
                         <div
                           className={clsx(
                             "max-w-[80%] rounded-2xl px-3.5 py-2 text-sm",
-                            mine ? "rounded-ee-md bg-navy-900 text-white" : "rounded-es-md bg-slate-100 text-navy-900",
+                            mine
+                              ? "rounded-ee-md bg-brand text-white"
+                              : "rounded-es-md bg-slate-100 text-navy-900",
                           )}
                         >
-                          <p className="whitespace-pre-wrap break-words">{msg.body}</p>
-                          <p className={clsx("mt-1 text-[11px]", mine ? "text-navy-200" : "text-slate-500")}>
+                          <p className="whitespace-pre-wrap break-words">
+                            {msg.body}
+                          </p>
+                          <p
+                            className={clsx(
+                              "mt-1 text-[11px]",
+                              mine ? "text-white/70" : "text-slate-500",
+                            )}
+                          >
                             {formatDate(msg.created_at, locale, true)}
                           </p>
                         </div>
@@ -169,9 +232,18 @@ export async function Inbox({ space, withId }: { space: "teacher" | "student"; w
               </div>
 
               <div className="border-t border-slate-100 p-3">
-                <Form action={sendMessage.bind(null, current.id)} resetOnSuccess>
+                <Form
+                  action={sendMessage.bind(null, current.id)}
+                  resetOnSuccess
+                >
                   <div className="flex items-end gap-2">
-                    <TextareaField label={m.placeholder} name="body" rows={2} required className="flex-1 [&_label]:sr-only" />
+                    <TextareaField
+                      label={m.placeholder}
+                      name="body"
+                      rows={2}
+                      required
+                      className="flex-1 [&_label]:sr-only"
+                    />
                     <SubmitButton pendingLabel="…" className="shrink-0">
                       <Send className="h-4 w-4 rtl:-scale-x-100" aria-hidden />
                       <span className="hidden sm:inline">{m.send}</span>

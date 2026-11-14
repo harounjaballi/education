@@ -38,27 +38,33 @@ const ICONS: Record<IconName, LucideIcon> = {
 type Variant = "admin" | "teacher" | "student";
 type Item = { href: string; icon: IconName; labelText: string };
 
+// Liens blancs sur la barre en dégradé ; le lien actif devient une pastille blanche.
+const LINK = {
+  base: "text-white/80 hover:bg-white/10 hover:text-white",
+  active: "bg-white text-brand-ink shadow-[0_6px_16px_-8px_rgba(0,0,0,0.35)]",
+};
 const LINK_STYLES: Record<Variant, { base: string; active: string }> = {
-  admin: {
-    base: "text-navy-200 hover:bg-white/5 hover:text-white",
-    active: "bg-white/10 text-white",
-  },
-  teacher: {
-    base: "text-slate-600 hover:bg-slate-100 hover:text-navy-900",
-    active: "bg-navy-900 text-white shadow-sm",
-  },
-  student: {
-    base: "text-slate-600 hover:bg-white hover:text-navy-900",
-    active: "bg-white text-teal-700 shadow-card ring-1 ring-teal-100",
-  },
+  admin: LINK,
+  teacher: LINK,
+  student: LINK,
 };
 
 function isActive(pathname: string, href: string) {
   const root = href.split("/").length === 2; // "/admin", "/teacher", "/student"
-  return root ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
+  return root
+    ? pathname === href
+    : pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function SidebarNav({ items, variant, onNavigate }: { items: Item[]; variant: Variant; onNavigate?: () => void }) {
+export function SidebarNav({
+  items,
+  variant,
+  onNavigate,
+}: {
+  items: Item[];
+  variant: Variant;
+  onNavigate?: () => void;
+}) {
   const pathname = usePathname();
   const styles = LINK_STYLES[variant];
   return (
@@ -73,7 +79,7 @@ export function SidebarNav({ items, variant, onNavigate }: { items: Item[]; vari
             onClick={onNavigate}
             aria-current={active ? "page" : undefined}
             className={clsx(
-              "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition",
+              "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition",
               active ? styles.active : styles.base,
             )}
           >
@@ -129,7 +135,11 @@ export function MobileNav({
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true">
+        <div
+          className="fixed inset-0 z-50 lg:hidden"
+          role="dialog"
+          aria-modal="true"
+        >
           <button
             type="button"
             className="absolute inset-0 bg-navy-950/40 backdrop-blur-sm"
@@ -153,7 +163,11 @@ export function MobileNav({
                 <X className="h-5 w-5" aria-hidden />
               </button>
             </div>
-            <SidebarNav items={items} variant={variant} onNavigate={() => setOpen(false)} />
+            <SidebarNav
+              items={items}
+              variant={variant}
+              onNavigate={() => setOpen(false)}
+            />
             {userBlock}
           </aside>
         </div>

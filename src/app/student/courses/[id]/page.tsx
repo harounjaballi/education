@@ -60,7 +60,7 @@ export default async function StudentCoursePage({ params }: { params: Promise<{ 
                   <ul className="divide-y divide-slate-100">
                     {lessons.map((l) => (
                       <li key={l.id}>
-                        <Link href={`/student/lessons/${l.id}`} className="flex items-center gap-3 py-2.5 text-sm hover:text-teal-700">
+                        <Link href={`/student/lessons/${l.id}`} className="flex items-center gap-3 py-2.5 text-sm hover:text-brand">
                           <FileText className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
                           <span className="min-w-0 flex-1 truncate font-medium">{l.title}</span>
                         </Link>
