@@ -14,22 +14,22 @@ export default async function LoginPage({
   const { next, error } = await searchParams;
 
   const features = [
-    // Une couleur par espace : lagon (enseignant), abricot (élève), indigo (administration).
+    // Pastilles dans les tons du bleu de la plateforme.
     {
       icon: BookOpen,
-      tile: "from-[#0E7490] to-[#1D4ED8]",
+      tile: "from-[#60A5FA] to-[#3B82F6]",
       fr: "Cours, documents et vidéos structurés",
       ar: "دروس ووثائق وفيديوهات منظّمة",
     },
     {
       icon: Video,
-      tile: "from-[#D9480F] to-[#C2255C]",
+      tile: "from-[#38BDF8] to-[#2563EB]",
       fr: "Classes virtuelles en direct",
       ar: "أقسام افتراضية مباشرة",
     },
     {
       icon: ShieldCheck,
-      tile: "from-[#4F46E5] to-[#7C3AED]",
+      tile: "from-[#93C5FD] to-[#3B82F6]",
       fr: "Données isolées et sécurisées",
       ar: "بيانات معزولة ومؤمّنة",
     },
@@ -38,17 +38,17 @@ export default async function LoginPage({
   return (
     <main className="grid min-h-dvh lg:grid-cols-[1.1fr_1fr]">
       {/* Panneau de marque */}
-      <section className="relative hidden overflow-hidden bg-gradient-to-br from-navy-950 via-[#1E1B4B] to-[#0B3F5C] p-12 text-white lg:flex lg:flex-col lg:justify-between">
+      <section className="relative hidden overflow-hidden bg-gradient-to-br from-[#0B1B4D] via-[#1E3A8A] to-[#2563EB] p-12 text-white lg:flex lg:flex-col lg:justify-between">
         <div
           aria-hidden
-          className="pointer-events-none absolute -end-32 -top-32 h-96 w-96 rounded-full bg-[#D9480F]/30 blur-3xl"
+          className="pointer-events-none absolute -end-32 -top-32 h-96 w-96 rounded-full bg-[#60A5FA]/30 blur-3xl"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute -bottom-40 -start-20 h-[28rem] w-[28rem] rounded-full bg-[#0E7490]/40 blur-3xl"
+          className="pointer-events-none absolute -bottom-40 -start-20 h-[28rem] w-[28rem] rounded-full bg-[#1D4ED8]/40 blur-3xl"
         />
         <div className="relative flex items-center gap-3">
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-white text-[#4F46E5]">
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-white text-[#2563EB]">
             <GraduationCap className="h-5 w-5" aria-hidden />
           </span>
           <span className="font-display text-xl font-bold tracking-tight">
@@ -89,7 +89,7 @@ export default async function LoginPage({
         </div>
         <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center animate-fade-up">
           <div className="mb-8 flex items-center gap-3 lg:hidden">
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#4F46E5] to-[#0E7490] text-white">
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#2563EB] to-[#1E40AF] text-white">
               <GraduationCap className="h-5 w-5" aria-hidden />
             </span>
             <span className="font-display text-xl font-bold tracking-tight text-navy-900">

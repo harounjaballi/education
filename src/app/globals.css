@@ -3,25 +3,15 @@
 @tailwind utilities;
 
 @layer base {
-  /* Couleurs par espace (triplets RGB). Par défaut : palette enseignant. */
+  /* Couleur de la plateforme (triplets RGB) : bleu franc pour tous les espaces. */
   :root,
-  [data-space="teacher"] {
-    --brand: 14 116 144; /* #0E7490 lagon */
-    --brand-2: 29 78 216; /* #1D4ED8 bleu */
-    --brand-soft: 230 246 250;
-    --brand-ink: 21 94 117;
-  }
-  [data-space="admin"] {
-    --brand: 79 70 229; /* #4F46E5 indigo */
-    --brand-2: 124 58 237; /* #7C3AED violet */
-    --brand-soft: 238 240 255;
-    --brand-ink: 55 48 163;
-  }
+  [data-space="admin"],
+  [data-space="teacher"],
   [data-space="student"] {
-    --brand: 217 72 15; /* #D9480F abricot */
-    --brand-2: 194 37 92; /* #C2255C framboise */
-    --brand-soft: 255 241 232;
-    --brand-ink: 154 52 18;
+    --brand: 37 99 235; /* #2563EB */
+    --brand-2: 30 64 175; /* #1E40AF */
+    --brand-soft: 239 245 255; /* #EFF5FF */
+    --brand-ink: 30 64 175; /* #1E40AF */
   }
 
   html {

@@ -31,7 +31,7 @@ export default {
           900: "#134843",
         },
         surface: "#F4F6FC",
-        // Couleur de l'espace courant (admin, enseignant, élève) : variables CSS dans globals.css.
+        // Couleur de la plateforme : variables CSS dans globals.css.
         brand: {
           DEFAULT: "rgb(var(--brand) / <alpha-value>)",
           2: "rgb(var(--brand-2) / <alpha-value>)",
