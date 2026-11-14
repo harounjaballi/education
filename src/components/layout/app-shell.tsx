@@ -3,7 +3,9 @@ import { getDictionary } from "@/lib/i18n/server";
 import { createClient } from "@/lib/supabase/server";
 import { NAVIGATION, SPACE_THEME } from "@/config/navigation";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { Suspense } from "react";
 import { PresenceHeartbeat } from "@/components/presence-heartbeat";
+import { MessageNotifier } from "@/components/messages/message-notifier";
 import { SidebarNav, MobileNav } from "./sidebar-nav";
 import type { Profile } from "@/lib/types";
 
@@ -29,7 +31,8 @@ const THEMES = {
     signOut: "text-slate-600 hover:bg-slate-100 hover:text-navy-900",
   },
   student: {
-    aside: "bg-gradient-to-b from-teal-50/80 to-white text-slate-600 border-teal-100",
+    aside:
+      "bg-gradient-to-b from-teal-50/80 to-white text-slate-600 border-teal-100",
     brand: "text-navy-900",
     logo: "bg-teal-500 text-white",
     badge: "bg-white text-teal-700 ring-1 ring-teal-200",
@@ -40,14 +43,27 @@ const THEMES = {
   },
 } as const;
 
-export async function AppShell({ profile, children }: { profile: Profile; children: React.ReactNode }) {
+export async function AppShell({
+  profile,
+  children,
+}: {
+  profile: Profile;
+  children: React.ReactNode;
+}) {
   const { t, locale } = await getDictionary();
   const variant = SPACE_THEME[profile.role];
   const theme = THEMES[variant];
   const supabase = await createClient();
-  const { data: settings } = await supabase.from("platform_settings").select("platform_name").maybeSingle();
-  const platformName = (settings?.platform_name as string | undefined) || t.app.name;
-  const items = NAVIGATION[profile.role].map((item) => ({ ...item, labelText: t.nav[item.label] }));
+  const { data: settings } = await supabase
+    .from("platform_settings")
+    .select("platform_name")
+    .maybeSingle();
+  const platformName =
+    (settings?.platform_name as string | undefined) || t.app.name;
+  const items = NAVIGATION[profile.role].map((item) => ({
+    ...item,
+    labelText: t.nav[item.label],
+  }));
   const initials =
     profile.full_name
       .split(/\s+/)
@@ -58,12 +74,20 @@ export async function AppShell({ profile, children }: { profile: Profile; childr
 
   const brand = (
     <div className="flex items-center gap-3 px-2">
-      <span className={`grid h-9 w-9 place-items-center rounded-xl ${theme.logo}`}>
+      <span
+        className={`grid h-9 w-9 place-items-center rounded-xl ${theme.logo}`}
+      >
         <GraduationCap className="h-[18px] w-[18px]" aria-hidden />
       </span>
       <div className="min-w-0">
-        <p className={`truncate text-[15px] font-semibold tracking-tight ${theme.brand}`}>{platformName}</p>
-        <span className={`mt-0.5 inline-block rounded-md px-1.5 py-0.5 text-[11px] font-medium ${theme.badge}`}>
+        <p
+          className={`truncate text-[15px] font-semibold tracking-tight ${theme.brand}`}
+        >
+          {platformName}
+        </p>
+        <span
+          className={`mt-0.5 inline-block rounded-md px-1.5 py-0.5 text-[11px] font-medium ${theme.badge}`}
+        >
           {t.roles[profile.role]}
         </span>
       </div>
@@ -77,7 +101,9 @@ export async function AppShell({ profile, children }: { profile: Profile; childr
           {initials}
         </span>
         <div className="min-w-0 flex-1">
-          <p className={`truncate text-sm font-medium ${theme.user}`}>{profile.full_name || profile.email}</p>
+          <p className={`truncate text-sm font-medium ${theme.user}`}>
+            {profile.full_name || profile.email}
+          </p>
           <p className={`truncate text-xs ${theme.userSub}`} dir="ltr">
             {profile.email}
           </p>
@@ -98,8 +124,23 @@ export async function AppShell({ profile, children }: { profile: Profile; childr
   return (
     <div className="min-h-dvh lg:grid lg:grid-cols-[264px_1fr]">
       <PresenceHeartbeat />
+      {(profile.role === "teacher" || profile.role === "student") && (
+        <Suspense fallback={null}>
+          <MessageNotifier
+            userId={profile.id}
+            space={profile.role}
+            labels={{
+              title: t.messages.newMessage,
+              open: t.messages.open,
+              close: t.common.close,
+            }}
+          />
+        </Suspense>
+      )}
       {/* Barre latérale (bureau) */}
-      <aside className={`sticky top-0 hidden h-dvh flex-col gap-6 border-e px-4 py-5 lg:flex ${theme.aside}`}>
+      <aside
+        className={`sticky top-0 hidden h-dvh flex-col gap-6 border-e px-4 py-5 lg:flex ${theme.aside}`}
+      >
         {brand}
         <SidebarNav items={items} variant={variant} />
         {userBlock}
@@ -121,7 +162,9 @@ export async function AppShell({ profile, children }: { profile: Profile; childr
           <LocaleSwitcher locale={locale} />
         </header>
 
-        <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">{children}</main>
+        <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+          {children}
+        </main>
       </div>
     </div>
   );
