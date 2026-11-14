@@ -58,7 +58,7 @@ export default async function StudentFeedPage({
       className={clsx(
         "rounded-full px-3.5 py-1.5 text-sm font-medium transition",
         active
-          ? "bg-navy-900 text-white"
+          ? "bg-brand text-white shadow-sm"
           : "bg-white text-slate-600 ring-1 ring-slate-200 hover:text-navy-900",
       )}
     >

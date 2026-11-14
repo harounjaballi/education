@@ -30,10 +30,18 @@ export default {
           800: "#125650",
           900: "#134843",
         },
-        surface: "#F6F8FB",
+        surface: "#F4F6FC",
+        // Couleur de l'espace courant (admin, enseignant, élève) : variables CSS dans globals.css.
+        brand: {
+          DEFAULT: "rgb(var(--brand) / <alpha-value>)",
+          2: "rgb(var(--brand-2) / <alpha-value>)",
+          soft: "rgb(var(--brand-soft) / <alpha-value>)",
+          ink: "rgb(var(--brand-ink) / <alpha-value>)",
+        },
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "var(--font-sans)", "system-ui", "sans-serif"],
         arabic: ["var(--font-arabic)", "system-ui", "sans-serif"],
       },
       boxShadow: {

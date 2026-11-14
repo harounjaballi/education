@@ -39,7 +39,7 @@ export function PostCard({
       className={clsx(
         "card p-5",
         post.kind === "important" && "border-red-200",
-        post.pinned && "ring-1 ring-teal-200",
+        post.pinned && "ring-2 ring-brand/25",
       )}
     >
       <div className="mb-3 flex flex-wrap items-center gap-2">
@@ -50,7 +50,7 @@ export function PostCard({
           </span>
         )}
         {post.pinned && (
-          <span className="inline-flex items-center gap-1 text-xs font-medium text-teal-700">
+          <span className="inline-flex items-center gap-1 text-xs font-medium text-brand-ink">
             <Pin className="h-3.5 w-3.5" aria-hidden />
             {t.pinnedLabel}
           </span>

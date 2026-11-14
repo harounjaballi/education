@@ -9,38 +9,20 @@ import { MessageNotifier } from "@/components/messages/message-notifier";
 import { SidebarNav, MobileNav } from "./sidebar-nav";
 import type { Profile } from "@/lib/types";
 
-const THEMES = {
-  admin: {
-    aside: "bg-navy-950 text-navy-100 border-navy-900",
-    brand: "text-white",
-    logo: "bg-teal-500 text-white",
-    badge: "bg-white/10 text-teal-200",
-    footer: "border-white/10",
-    user: "text-white",
-    userSub: "text-navy-300",
-    signOut: "text-navy-200 hover:bg-white/10 hover:text-white",
-  },
-  teacher: {
-    aside: "bg-white text-slate-600 border-slate-200",
-    brand: "text-navy-900",
-    logo: "bg-navy-900 text-white",
-    badge: "bg-teal-50 text-teal-700",
-    footer: "border-slate-200",
-    user: "text-navy-900",
-    userSub: "text-slate-500",
-    signOut: "text-slate-600 hover:bg-slate-100 hover:text-navy-900",
-  },
-  student: {
-    aside:
-      "bg-gradient-to-b from-teal-50/80 to-white text-slate-600 border-teal-100",
-    brand: "text-navy-900",
-    logo: "bg-teal-500 text-white",
-    badge: "bg-white text-teal-700 ring-1 ring-teal-200",
-    footer: "border-teal-100",
-    user: "text-navy-900",
-    userSub: "text-slate-500",
-    signOut: "text-slate-600 hover:bg-white hover:text-navy-900",
-  },
+/**
+ * Barre latérale en dégradé aux couleurs de l'espace (variables --brand / --brand-2,
+ * définies par data-space dans globals.css) : indigo (admin), lagon (enseignant), abricot (élève).
+ */
+const THEME = {
+  aside: "bg-gradient-to-b from-brand to-brand-2 text-white border-transparent",
+  brand: "text-white",
+  logo: "bg-white text-brand shadow-sm",
+  badge: "bg-white/15 text-white",
+  footer: "border-white/15",
+  user: "text-white",
+  userSub: "text-white/70",
+  initials: "bg-white/20 text-white",
+  signOut: "text-white/80 hover:bg-white/10 hover:text-white",
 } as const;
 
 export async function AppShell({
@@ -52,7 +34,7 @@ export async function AppShell({
 }) {
   const { t, locale } = await getDictionary();
   const variant = SPACE_THEME[profile.role];
-  const theme = THEMES[variant];
+  const theme = THEME;
   const supabase = await createClient();
   const { data: settings } = await supabase
     .from("platform_settings")
@@ -81,7 +63,7 @@ export async function AppShell({
       </span>
       <div className="min-w-0">
         <p
-          className={`truncate text-[15px] font-semibold tracking-tight ${theme.brand}`}
+          className={`truncate font-display text-base font-bold tracking-tight ${theme.brand}`}
         >
           {platformName}
         </p>
@@ -97,7 +79,9 @@ export async function AppShell({
   const userBlock = (
     <div className={`border-t pt-4 ${theme.footer}`}>
       <div className="flex items-center gap-3 px-2">
-        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-teal-500/15 text-sm font-semibold text-teal-700">
+        <span
+          className={`grid h-9 w-9 shrink-0 place-items-center rounded-full text-sm font-semibold ${theme.initials}`}
+        >
           {initials}
         </span>
         <div className="min-w-0 flex-1">
@@ -122,7 +106,10 @@ export async function AppShell({
   );
 
   return (
-    <div className="min-h-dvh lg:grid lg:grid-cols-[264px_1fr]">
+    <div
+      data-space={variant}
+      className="min-h-dvh lg:grid lg:grid-cols-[264px_1fr]"
+    >
       <PresenceHeartbeat />
       {(profile.role === "teacher" || profile.role === "student") && (
         <Suspense fallback={null}>
@@ -146,9 +133,9 @@ export async function AppShell({
         {userBlock}
       </aside>
 
-      <div className="flex min-w-0 flex-col">
+      <div className="flex min-w-0 flex-col bg-gradient-to-b from-brand-soft via-surface to-surface bg-[length:100%_360px] bg-no-repeat">
         {/* En-tête (mobile + actions) */}
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-slate-200/70 bg-white/80 px-4 backdrop-blur sm:px-6">
+        <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-white/60 bg-white/70 px-4 backdrop-blur sm:px-6">
           <MobileNav
             items={items}
             variant={variant}

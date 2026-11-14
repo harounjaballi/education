@@ -82,7 +82,7 @@ export default async function StudentLessonPage({ params }: { params: Promise<{ 
                   href={v.url ?? "#"}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-2 px-5 py-3 text-sm font-medium text-navy-900 hover:text-teal-700"
+                  className="flex items-center gap-2 px-5 py-3 text-sm font-medium text-navy-900 hover:text-brand"
                 >
                   <PlayCircle className="h-4 w-4 shrink-0" aria-hidden />
                   {v.title}
@@ -103,7 +103,7 @@ export default async function StudentLessonPage({ params }: { params: Promise<{ 
                     <a
                       href={url ?? "#"}
                       download={d.name}
-                      className="flex items-center gap-3 text-sm hover:text-teal-700"
+                      className="flex items-center gap-3 text-sm hover:text-brand"
                     >
                       <FileText className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
                       <span className="min-w-0 flex-1">
