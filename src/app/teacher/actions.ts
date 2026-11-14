@@ -23,6 +23,10 @@ const classSchema = z.object({
   level: zOptText(80),
   academic_year: z.string().trim().regex(/^\d{4}-\d{4}$/, "year"),
   description: zOptText(1000),
+  monthly_fee: z
+    .union([z.literal(""), z.coerce.number({ message: "invalidField" }).min(0, "invalidField").max(9_999_999, "invalidField")])
+    .optional()
+    .transform((v) => (v === "" || v === undefined ? null : v)),
 });
 
 function serviceOrNull() {

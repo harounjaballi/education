@@ -14,7 +14,7 @@ export default async function SettingsPage() {
   const s = t.admin.settings;
 
   const [settingsRes, levelsRes] = await Promise.all([
-    supabase.from("platform_settings").select("platform_name, academic_year, support_email, default_locale").single(),
+    supabase.from("platform_settings").select("platform_name, academic_year, support_email, default_locale, currency").single(),
     supabase.from("levels").select("id, name").order("position").order("name"),
   ]);
   const settings = must(settingsRes) as {
@@ -22,6 +22,7 @@ export default async function SettingsPage() {
     academic_year: string;
     support_email: string | null;
     default_locale: "fr" | "ar";
+    currency: string;
   };
   const levels = must(levelsRes) as { id: string; name: string }[];
 
@@ -46,6 +47,7 @@ export default async function SettingsPage() {
               />
             </div>
             <Field label={s.supportEmail} name="support_email" type="email" dir="ltr" defaultValue={settings.support_email} />
+            <Field label={s.currency} name="currency" required hint={s.currencyHint} defaultValue={settings.currency} />
             <div className="flex justify-end">
               <SubmitButton pendingLabel={t.common.saving}>{t.common.save}</SubmitButton>
             </div>

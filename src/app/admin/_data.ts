@@ -43,3 +43,10 @@ export function countOf(v: unknown): number {
   const arr = Array.isArray(v) ? v : v ? [v] : [];
   return (arr[0] as { count?: number } | undefined)?.count ?? 0;
 }
+
+/** Devise des montants (paramètres de la plateforme). */
+export async function getCurrency() {
+  const supabase = await createClient();
+  const { data } = await supabase.from("platform_settings").select("currency").maybeSingle();
+  return (data?.currency as string | undefined) || "DT";
+}

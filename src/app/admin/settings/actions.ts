@@ -12,6 +12,7 @@ const settingsSchema = z.object({
     .optional()
     .transform((v) => (v ? v : null)),
   default_locale: z.enum(["fr", "ar"], { message: "invalidField" }),
+  currency: zText(10),
 });
 
 export async function updateSettings(_prev: ActionState, formData: FormData): Promise<ActionState> {

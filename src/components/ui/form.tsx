@@ -119,7 +119,7 @@ export function Field({
 }: {
   label: string;
   name: string;
-  type?: "text" | "email" | "password" | "tel" | "date" | "number" | "datetime-local" | "url";
+  type?: "text" | "email" | "password" | "tel" | "date" | "month" | "number" | "datetime-local" | "url";
   defaultValue?: string | null;
   required?: boolean;
   hint?: string;
