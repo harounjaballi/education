@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MessageSquare } from "lucide-react";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getDictionary, formatDate } from "@/lib/i18n/server";
@@ -60,7 +61,15 @@ export default async function TeacherStudentPage({ params }: { params: Promise<{
         title={user.full_name || user.email}
         subtitle={t.roles.student}
         back={{ href: "/teacher/students", label: s.title }}
-        actions={<Badge tone={STATUS_TONE[user.status]}>{t.admin.status[user.status]}</Badge>}
+        actions={
+          <>
+            <Badge tone={STATUS_TONE[user.status]}>{t.admin.status[user.status]}</Badge>
+            <Link href={`/teacher/messages?with=${user.id}`} className="btn-secondary">
+              <MessageSquare className="h-4 w-4" aria-hidden />
+              {t.messages.send}
+            </Link>
+          </>
+        }
       />
 
       <div className="grid gap-6 lg:grid-cols-[1fr_340px]">

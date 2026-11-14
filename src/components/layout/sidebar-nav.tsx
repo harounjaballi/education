@@ -9,6 +9,7 @@ import {
   GraduationCap,
   LayoutDashboard,
   Menu,
+  MessageSquare,
   School,
   Settings,
   Users,
@@ -25,6 +26,7 @@ const ICONS: Record<IconName, LucideIcon> = {
   students: GraduationCap,
   classes: School,
   courses: BookOpen,
+  messages: MessageSquare,
   activity: Activity,
   settings: Settings,
 };

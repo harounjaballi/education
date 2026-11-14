@@ -1,7 +1,7 @@
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { Role } from "@/lib/types";
 
-export type IconName = "dashboard" | "schools" | "teachers" | "students" | "classes" | "courses" | "activity" | "settings";
+export type IconName = "dashboard" | "schools" | "teachers" | "students" | "classes" | "courses" | "messages" | "activity" | "settings";
 
 export interface NavItem {
   href: string;
@@ -28,10 +28,12 @@ export const NAVIGATION: Record<Role, NavItem[]> = {
     { href: "/teacher/classes", label: "classes", icon: "classes" },
     { href: "/teacher/students", label: "students", icon: "students" },
     { href: "/teacher/courses", label: "courses", icon: "courses" },
+    { href: "/teacher/messages", label: "messages", icon: "messages" },
   ],
   student: [
     { href: "/student", label: "dashboard", icon: "dashboard" },
     { href: "/student/courses", label: "courses", icon: "courses" },
+    { href: "/student/messages", label: "messages", icon: "messages" },
   ],
 };
 
