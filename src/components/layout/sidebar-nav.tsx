@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState, Children } from "react";
 import {
   Activity,
+  BookOpen,
   Building2,
   GraduationCap,
   LayoutDashboard,
@@ -23,6 +24,7 @@ const ICONS: Record<IconName, LucideIcon> = {
   teachers: Users,
   students: GraduationCap,
   classes: School,
+  courses: BookOpen,
   activity: Activity,
   settings: Settings,
 };

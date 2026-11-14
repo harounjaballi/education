@@ -115,6 +115,7 @@ export function Field({
   autoComplete,
   placeholder,
   className,
+  list,
 }: {
   label: string;
   name: string;
@@ -126,12 +127,15 @@ export function Field({
   autoComplete?: string;
   placeholder?: string;
   className?: string;
+  /** Identifiant d'un <datalist> de suggestions. */
+  list?: string;
 }) {
   const f = useField(name, defaultValue);
   return (
     <div className={clsx("space-y-1.5", className)}>
       <Label htmlFor={f.id} label={label} required={required} />
       <input
+        list={list}
         id={f.id}
         name={name}
         type={type}
