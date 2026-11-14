@@ -10,8 +10,7 @@ import { SidebarNav, MobileNav } from "./sidebar-nav";
 import type { Profile } from "@/lib/types";
 
 /**
- * Barre latérale en dégradé aux couleurs de l'espace (variables --brand / --brand-2,
- * définies par data-space dans globals.css) : indigo (admin), lagon (enseignant), abricot (élève).
+ * Barre latérale en dégradé bleu (variables --brand / --brand-2 définies dans globals.css).
  */
 const THEME = {
   aside: "bg-gradient-to-b from-brand to-brand-2 text-white border-transparent",
