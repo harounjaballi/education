@@ -101,5 +101,30 @@ export async function adminContext() {
   return { t, ok: true as const, supabase, userId: user.id, log };
 }
 
+/**
+ * Contexte d'une action réservée à un enseignant actif.
+ * La RLS limite ensuite chaque requête à ses propres classes et élèves.
+ */
+export async function teacherContext() {
+  const { t } = await getDictionary();
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { t, ok: false as const };
+  const { data: me } = await supabase.from("profiles").select("role, status, school_id").eq("id", user.id).single();
+  if (!me || me.role !== "teacher" || me.status !== "active") return { t, ok: false as const };
+
+  const log = (action: string, entity: string, entityId?: string | null, metadata: Record<string, unknown> = {}) =>
+    supabase.rpc("log_action", {
+      p_action: action,
+      p_entity: entity,
+      p_entity_id: entityId ?? null,
+      p_metadata: metadata,
+    });
+
+  return { t, ok: true as const, supabase, userId: user.id, schoolId: (me.school_id as string | null) ?? null, log };
+}
+
 /** Code d'erreur Postgres « violation d'unicité ». */
 export const isUniqueViolation = (err: { code?: string } | null | undefined) => err?.code === "23505";

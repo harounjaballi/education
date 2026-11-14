@@ -23,7 +23,11 @@ export const NAVIGATION: Record<Role, NavItem[]> = {
     { href: "/admin/activity", label: "activity", icon: "activity" },
     { href: "/admin/settings", label: "settings", icon: "settings" },
   ],
-  teacher: [{ href: "/teacher", label: "dashboard", icon: "dashboard" }],
+  teacher: [
+    { href: "/teacher", label: "dashboard", icon: "dashboard" },
+    { href: "/teacher/classes", label: "classes", icon: "classes" },
+    { href: "/teacher/students", label: "students", icon: "students" },
+  ],
   student: [{ href: "/student", label: "dashboard", icon: "dashboard" }],
 };
 
