@@ -213,6 +213,8 @@ const fr = {
     placeholder: "Votre message…",
     send: "Envoyer",
     you: "Vous",
+    newMessage: "Nouveau message",
+    open: "Ouvrir la conversation",
   },
   teacher: {
     greeting: "Bonjour",
@@ -596,6 +598,8 @@ const ar: Dictionary = {
     placeholder: "رسالتك…",
     send: "إرسال",
     you: "أنت",
+    newMessage: "رسالة جديدة",
+    open: "فتح المحادثة",
   },
   teacher: {
     greeting: "مرحبًا",
