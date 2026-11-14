@@ -37,9 +37,15 @@ export default async function StudentLessonPage({ params }: { params: Promise<{ 
   const documents = [...(lesson.documents ?? [])].sort((a, b) => a.created_at.localeCompare(b.created_at));
   const videos = [...(lesson.videos ?? [])].sort((a, b) => a.created_at.localeCompare(b.created_at));
 
-  const signed = documents.length
-    ? (await supabase.storage.from("course-files").createSignedUrls(documents.map((d) => d.storage_path), 3600)).data ?? []
-    : [];
+  // Liens temporaires (1 h) qui forcent le téléchargement avec le nom d'origine du fichier.
+  const signed = await Promise.all(
+    documents.map(async (d) => {
+      const { data } = await supabase.storage
+        .from("course-files")
+        .createSignedUrl(d.storage_path, 3600, { download: d.name });
+      return { path: d.storage_path, signedUrl: data?.signedUrl ?? null };
+    }),
+  );
   const urlOf = (path: string) => signed.find((s) => s.path === path)?.signedUrl ?? null;
 
   return (
@@ -96,8 +102,7 @@ export default async function StudentLessonPage({ params }: { params: Promise<{ 
                   <li key={d.id} className="py-2">
                     <a
                       href={url ?? "#"}
-                      target="_blank"
-                      rel="noreferrer"
+                      download={d.name}
                       className="flex items-center gap-3 text-sm hover:text-teal-700"
                     >
                       <FileText className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />
