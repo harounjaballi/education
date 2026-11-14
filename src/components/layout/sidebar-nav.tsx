@@ -11,6 +11,7 @@ import {
   LayoutDashboard,
   Menu,
   MessageSquare,
+  Newspaper,
   School,
   Settings,
   Users,
@@ -29,6 +30,7 @@ const ICONS: Record<IconName, LucideIcon> = {
   courses: BookOpen,
   messages: MessageSquare,
   payments: Banknote,
+  feed: Newspaper,
   activity: Activity,
   settings: Settings,
 };
