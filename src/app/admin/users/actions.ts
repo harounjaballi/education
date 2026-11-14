@@ -96,6 +96,9 @@ export async function createUser(role: ManagedRole, _prev: ActionState, formData
   const { error: profileError } = await service
     .from("profiles")
     .update({
+      // Supabase n'enregistre app_metadata qu'après l'insertion : le trigger
+      // handle_new_user voit donc toujours « student ». On impose le bon rôle ici.
+      role,
       full_name: data.full_name,
       school_id: data.school_id,
       locale: settings?.default_locale === "ar" ? "ar" : "fr",
@@ -106,10 +109,11 @@ export async function createUser(role: ManagedRole, _prev: ActionState, formData
     return rollback("generic");
   }
 
+  // Supprime la fiche créée à tort par le trigger, puis crée/complète la bonne.
+  await service.from(role === "teacher" ? "students" : "teachers").delete().eq("id", uid);
   const { error: extraError } = await service
     .from(role === "teacher" ? "teachers" : "students")
-    .update(splitExtras(role, data))
-    .eq("id", uid);
+    .upsert({ id: uid, ...splitExtras(role, data) });
   if (extraError) console.error("[createUser] extras.update", extraError.code, extraError.message);
   if (extraError) return rollback(isUniqueViolation(extraError) ? "codeTaken" : "generic", "student_code");
 
