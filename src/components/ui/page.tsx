@@ -110,7 +110,7 @@ export function Table({
     <div className="card overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-sm" style={{ minWidth }}>
-          <thead className="border-b border-slate-200/70 bg-brand-soft/50 text-start text-xs font-semibold text-slate-600">
+          <thead className="border-b border-slate-200/70 bg-slate-50/80 text-start text-[11px] font-semibold uppercase tracking-wider text-slate-500">
             <tr>
               {head.map((h, i) => (
                 <th
@@ -123,7 +123,7 @@ export function Table({
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">{children}</tbody>
+          <tbody className="divide-y divide-slate-100 [&>tr]:transition-colors [&>tr:hover]:bg-brand-soft/30">{children}</tbody>
         </table>
       </div>
     </div>

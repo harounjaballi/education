@@ -45,8 +45,8 @@ export default {
         arabic: ["var(--font-arabic)", "system-ui", "sans-serif"],
       },
       boxShadow: {
-        card: "0 1px 2px rgba(10,26,49,0.04), 0 4px 16px -4px rgba(10,26,49,0.06)",
-        lift: "0 2px 4px rgba(10,26,49,0.05), 0 12px 32px -8px rgba(10,26,49,0.12)",
+        card: "0 1px 2px rgba(10,26,49,0.03), 0 8px 24px -12px rgba(10,26,49,0.08)",
+        lift: "0 2px 4px rgba(10,26,49,0.04), 0 20px 40px -16px rgba(10,26,49,0.18)",
       },
       borderRadius: { xl: "0.875rem", "2xl": "1.125rem" },
       keyframes: {

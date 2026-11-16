@@ -52,28 +52,31 @@
 
 @layer components {
   .card {
-    @apply rounded-2xl border border-slate-200/60 bg-white shadow-card;
+    @apply rounded-2xl border border-slate-200/70 bg-white/90 shadow-card backdrop-blur-sm;
   }
   .label {
-    @apply block text-sm font-medium text-navy-900;
+    @apply block text-sm font-semibold text-navy-900;
   }
   .input {
-    @apply block w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-navy-900
-           placeholder:text-slate-400 transition
-           focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/15;
+    @apply block w-full rounded-xl border border-slate-200 bg-slate-50/70 px-3.5 py-2.5 text-sm text-navy-950
+           placeholder:text-slate-400 transition duration-200 hover:border-slate-300
+           focus:border-brand focus:bg-white focus:outline-none focus:ring-4 focus:ring-brand/15;
   }
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold
-           text-white shadow-[0_8px_20px_-8px_rgb(var(--brand)/0.7)] transition hover:bg-brand-ink active:translate-y-px
-           disabled:cursor-not-allowed disabled:opacity-60;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-brand to-brand-2 px-4 py-2.5
+           text-sm font-semibold text-white shadow-[0_10px_24px_-10px_rgb(var(--brand)/0.8)] transition-all duration-300
+           hover:-translate-y-px hover:shadow-[0_14px_30px_-10px_rgb(var(--brand)/0.9)] hover:brightness-110
+           active:translate-y-0 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0;
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5
-           text-sm font-semibold text-navy-900 transition hover:border-brand/40 hover:bg-brand-soft/60 hover:text-brand-ink;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5
+           text-sm font-semibold text-navy-900 shadow-sm transition duration-200
+           hover:border-brand/30 hover:bg-brand-soft/60 hover:text-brand-ink;
   }
   .btn-danger {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold
-           text-white shadow-sm transition hover:bg-red-700 active:translate-y-px
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 px-4 py-2.5
+           text-sm font-semibold text-white shadow-[0_10px_24px_-10px_rgba(225,29,72,0.7)] transition-all duration-300
+           hover:-translate-y-px hover:brightness-110 active:translate-y-0
            disabled:cursor-not-allowed disabled:opacity-60;
   }
   .btn-ghost-danger {
@@ -83,6 +86,6 @@
     @apply font-medium text-navy-900 underline-offset-4 hover:text-brand hover:underline;
   }
   .section-title {
-    @apply font-display text-[15px] font-semibold tracking-tight text-navy-900;
+    @apply font-display text-base font-semibold tracking-tight text-navy-950;
   }
 }

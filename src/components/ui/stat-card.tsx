@@ -23,22 +23,29 @@ export function StatCard({
   hint?: string;
 }) {
   return (
-    <div className="card p-5">
-      <div className="flex items-start justify-between gap-3">
+    <div className="card group relative overflow-hidden p-5 transition duration-300 hover:-translate-y-0.5 hover:shadow-lift">
+      <div
+        aria-hidden
+        className={clsx(
+          "pointer-events-none absolute -end-10 -top-10 h-32 w-32 rounded-full opacity-[0.12] blur-2xl transition-opacity duration-300 group-hover:opacity-25",
+          TONES[tone],
+        )}
+      />
+      <div className="relative flex items-start justify-between gap-3">
         <p className="text-sm font-medium text-slate-500">{label}</p>
         <span
           className={clsx(
-            "grid h-11 w-11 place-items-center rounded-2xl shadow-sm",
+            "grid h-11 w-11 place-items-center rounded-2xl shadow-[0_8px_20px_-8px_rgba(10,26,49,0.45)] ring-1 ring-white/30",
             TONES[tone],
           )}
         >
           <Icon className="h-5 w-5" aria-hidden />
         </span>
       </div>
-      <p className="mt-3 font-display text-[32px] font-bold leading-none tracking-tight text-navy-950 tabular-nums">
+      <p className="relative mt-3 font-display text-[32px] font-bold leading-none tracking-tight text-navy-950 tabular-nums">
         {value}
       </p>
-      {hint && <p className="mt-1 text-xs text-slate-500">{hint}</p>}
+      {hint && <p className="relative mt-1 text-xs text-slate-500">{hint}</p>}
     </div>
   );
 }

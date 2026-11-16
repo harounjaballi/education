@@ -40,10 +40,12 @@ const ICONS: Record<IconName, LucideIcon> = {
 type Variant = "admin" | "teacher" | "student";
 type Item = { href: string; icon: IconName; labelText: string };
 
-// Liens blancs sur la barre en dégradé ; le lien actif devient une pastille blanche.
+// Liens clairs sur la barre sombre ; le lien actif devient une pastille « verre » avec un trait coloré.
 const LINK = {
-  base: "text-white/80 hover:bg-white/10 hover:text-white",
-  active: "bg-white text-brand-ink shadow-[0_6px_16px_-8px_rgba(0,0,0,0.35)]",
+  base: "text-white/60 hover:bg-white/[0.06] hover:text-white",
+  active:
+    "bg-white/[0.09] text-white ring-1 ring-white/10 shadow-[0_8px_24px_-12px_rgba(99,102,241,0.6)] " +
+    "before:absolute before:inset-y-2 before:start-0 before:w-[3px] before:rounded-full before:bg-gradient-to-b before:from-[#22D3EE] before:to-[#6366F1]",
 };
 const LINK_STYLES: Record<Variant, { base: string; active: string }> = {
   admin: LINK,
@@ -70,7 +72,7 @@ export function SidebarNav({
   const pathname = usePathname();
   const styles = LINK_STYLES[variant];
   return (
-    <nav className="flex-1 space-y-1 overflow-y-auto">
+    <nav className="relative flex-1 space-y-1 overflow-y-auto">
       {items.map((item) => {
         const Icon = ICONS[item.icon];
         const active = isActive(pathname, item.href);
@@ -81,11 +83,14 @@ export function SidebarNav({
             onClick={onNavigate}
             aria-current={active ? "page" : undefined}
             className={clsx(
-              "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition",
+              "relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition duration-200",
               active ? styles.active : styles.base,
             )}
           >
-            <Icon className="h-[18px] w-[18px] shrink-0" aria-hidden />
+            <Icon
+              className={clsx("h-[18px] w-[18px] shrink-0 transition", active && "text-[#67E8F9]")}
+              aria-hidden
+            />
             {item.labelText}
           </Link>
         );
