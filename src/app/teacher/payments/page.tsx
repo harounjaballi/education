@@ -111,7 +111,7 @@ export default async function TeacherPaymentsPage({
       <PageHeader title={p.title} subtitle={p.subtitle} />
 
       <form method="get" className="mb-5 flex flex-wrap items-end gap-2">
-        <label className="space-y-1.5">
+        <label className="min-w-0 flex-1 space-y-1.5 sm:flex-none">
           <span className="label">{p.month}</span>
           <input
             type="month"
@@ -124,7 +124,7 @@ export default async function TeacherPaymentsPage({
         <button type="submit" className="btn-secondary">
           {p.show}
         </button>
-        <span className="ms-auto text-sm font-medium capitalize text-slate-600">
+        <span className="w-full text-sm sm:ms-auto sm:w-auto font-medium capitalize text-slate-600">
           {formatMonth(periodOf(month), locale)}
         </span>
       </form>
@@ -144,39 +144,83 @@ export default async function TeacherPaymentsPage({
         />
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[1fr_360px]">
-        <div className="space-y-6">
-          <Table
-            head={[p.student, p.due, p.paid, p.remaining, p.status]}
-            minWidth={620}
-          >
+      {/* minmax(0,1fr) + min-w-0 : la colonne principale ne déborde jamais de l'écran. */}
+      <div className="grid gap-6 2xl:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="min-w-0 space-y-6">
+          {/* Mobile : une carte par élève, sans défilement horizontal. */}
+          <ul className="space-y-3 md:hidden">
             {rows.length === 0 ? (
-              <EmptyRow colSpan={5} text={p.noStudents} />
+              <li className="card p-5 text-sm text-slate-500">{p.noStudents}</li>
             ) : (
               rows.map(({ s, classes, due, paid, remaining, status }) => (
-                <tr key={s.id} className="hover:bg-slate-50/60">
-                  <td className="px-4 py-3">
-                    <Link href={`/teacher/students/${s.id}`} className="link">
-                      {s.full_name || s.email}
-                    </Link>
-                    <p className="text-xs text-slate-500">
-                      {classes.map((c) => c.name).join(", ")}
-                    </p>
-                  </td>
-                  <td className="px-4 py-3 tabular-nums text-slate-600">
-                    {due ? money(due) : "—"}
-                  </td>
-                  <td className="px-4 py-3 tabular-nums text-slate-600">
-                    {paid ? money(paid) : "—"}
-                  </td>
-                  <td className="px-4 py-3 tabular-nums font-medium text-navy-900">
-                    {remaining ? money(remaining) : "—"}
-                  </td>
-                  <td className="px-4 py-3">{statusBadge[status]}</td>
-                </tr>
+                <li key={s.id} className="card p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <Link href={`/teacher/students/${s.id}`} className="link block truncate">
+                        {s.full_name || s.email}
+                      </Link>
+                      {classes.length > 0 && (
+                        <p className="truncate text-xs text-slate-500">
+                          {classes.map((c) => c.name).join(", ")}
+                        </p>
+                      )}
+                    </div>
+                    <div className="shrink-0">{statusBadge[status]}</div>
+                  </div>
+                  <dl className="mt-3 grid grid-cols-3 gap-2 text-xs">
+                    <div className="min-w-0">
+                      <dt className="text-slate-500">{p.due}</dt>
+                      <dd className="truncate tabular-nums text-slate-700">{due ? money(due) : "—"}</dd>
+                    </div>
+                    <div className="min-w-0">
+                      <dt className="text-slate-500">{p.paid}</dt>
+                      <dd className="truncate tabular-nums text-slate-700">{paid ? money(paid) : "—"}</dd>
+                    </div>
+                    <div className="min-w-0">
+                      <dt className="text-slate-500">{p.remaining}</dt>
+                      <dd className="truncate tabular-nums font-semibold text-navy-900">
+                        {remaining ? money(remaining) : "—"}
+                      </dd>
+                    </div>
+                  </dl>
+                </li>
               ))
             )}
-          </Table>
+          </ul>
+
+          <div className="hidden md:block">
+            <Table
+              head={[p.student, p.due, p.paid, p.remaining, p.status]}
+              minWidth={560}
+            >
+              {rows.length === 0 ? (
+                <EmptyRow colSpan={5} text={p.noStudents} />
+              ) : (
+                rows.map(({ s, classes, due, paid, remaining, status }) => (
+                  <tr key={s.id} className="hover:bg-slate-50/60">
+                    <td className="px-4 py-3">
+                      <Link href={`/teacher/students/${s.id}`} className="link">
+                        {s.full_name || s.email}
+                      </Link>
+                      <p className="text-xs text-slate-500">
+                        {classes.map((c) => c.name).join(", ")}
+                      </p>
+                    </td>
+                    <td className="px-4 py-3 tabular-nums text-slate-600">
+                      {due ? money(due) : "—"}
+                    </td>
+                    <td className="px-4 py-3 tabular-nums text-slate-600">
+                      {paid ? money(paid) : "—"}
+                    </td>
+                    <td className="px-4 py-3 tabular-nums font-medium text-navy-900">
+                      {remaining ? money(remaining) : "—"}
+                    </td>
+                    <td className="px-4 py-3">{statusBadge[status]}</td>
+                  </tr>
+                ))
+              )}
+            </Table>
+          </div>
           <p className="text-xs text-slate-500">{p.dueHelp}</p>
 
           <section className="card p-5">
@@ -188,18 +232,18 @@ export default async function TeacherPaymentsPage({
                 {payments.map((x) => (
                   <li
                     key={x.id}
-                    className="flex items-center gap-3 py-2.5 text-sm"
+                    className="flex items-center gap-2 py-2.5 text-sm sm:gap-3"
                   >
                     <div className="min-w-0 flex-1">
                       <p className="truncate font-medium text-navy-900">
                         {nameOf.get(x.student_id) ?? "—"}
                       </p>
-                      <p className="text-xs text-slate-500">
+                      <p className="break-words text-xs text-slate-500">
                         {formatDate(x.paid_at, locale)} · {p.methods[x.method]}
                         {x.note ? ` · ${x.note}` : ""}
                       </p>
                     </div>
-                    <span className="tabular-nums font-medium">
+                    <span className="shrink-0 tabular-nums font-medium">
                       {money(x.amount)}
                     </span>
                     <ConfirmForm
