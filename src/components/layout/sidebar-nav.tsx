@@ -15,6 +15,7 @@ import {
   School,
   Settings,
   Users,
+  Video,
   X,
   type LucideIcon,
 } from "lucide-react";
@@ -31,6 +32,7 @@ const ICONS: Record<IconName, LucideIcon> = {
   messages: MessageSquare,
   payments: Banknote,
   feed: Newspaper,
+  meetings: Video,
   activity: Activity,
   settings: Settings,
 };
