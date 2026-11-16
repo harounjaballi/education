@@ -10,9 +10,11 @@ import { SidebarNav, MobileNav } from "./sidebar-nav";
 import type { Profile } from "@/lib/types";
 
 /**
- * Barre latérale en dégradé aux couleurs de l'espace (variables --brand / --brand-2,
- * définies par data-space dans globals.css) : indigo (admin), lagon (enseignant), abricot (élève).
+ * Barre latérale en dégradé bleu (lagon → bleu, couleurs de l'espace enseignant) pour tous
+ * les espaces : SIDEBAR_SPACE impose les variables --brand / --brand-2 de globals.css sur la barre.
  */
+export const SIDEBAR_SPACE = "teacher";
+
 const THEME = {
   aside: "bg-gradient-to-b from-brand to-brand-2 text-white border-transparent",
   brand: "text-white",
@@ -126,6 +128,7 @@ export async function AppShell({
       )}
       {/* Barre latérale (bureau) */}
       <aside
+        data-space={SIDEBAR_SPACE}
         className={`sticky top-0 hidden h-dvh flex-col gap-6 border-e px-4 py-5 lg:flex ${theme.aside}`}
       >
         {brand}
