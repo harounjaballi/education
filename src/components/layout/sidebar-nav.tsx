@@ -147,6 +147,7 @@ export function MobileNav({
             aria-label={labels.close}
           />
           <aside
+            data-space="teacher"
             className={clsx(
               "absolute inset-y-0 start-0 flex w-[84%] max-w-xs flex-col gap-6 border-e px-4 py-5 shadow-lift animate-fade-up",
               asideClass,
