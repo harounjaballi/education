@@ -16,5 +16,5 @@ export interface Profile {
 export const ROLE_HOME: Record<Role, string> = {
   super_admin: "/admin",
   teacher: "/teacher",
-  student: "/student",
+  student: "/student/feed",
 };
